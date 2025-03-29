@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://ardian-pratama.vercel.app/sitemap.xml
