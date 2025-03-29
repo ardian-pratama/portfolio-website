@@ -1,3 +1,15 @@
+import { useLayoutEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { RouterProvider } from 'react-router-dom';
+import { router } from './routes/index.jsx';
+
 export default function App() {
-  return <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique qui, aliquid dignissimos molestias dolore vel eos ab aliquam possimus nisi.</p>
+  const theme = useSelector((state) => state.theme.value);
+
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    root.className = theme;
+  }, [theme]);
+
+  return <RouterProvider router={router} />;
 }
