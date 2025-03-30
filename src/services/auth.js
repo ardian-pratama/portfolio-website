@@ -8,6 +8,7 @@ import {
 import { auth } from '../lib/firebase.js';
 import { createDocument, getDocument } from './firestore.js';
 import { uploadFile } from './storage.js';
+import { toast } from 'sonner';
 
 const collection = 'users';
 
@@ -50,6 +51,9 @@ export const signIn = async ({ email, password }) => {
 
 export const logOut = async () => {
   await signOut(auth);
+  toast.message('Success', {
+    description: 'You have successfully signed out. See you next time.',
+  });
 };
 
 export const authStateListener = (callback) => {
@@ -57,6 +61,9 @@ export const authStateListener = (callback) => {
     if (user) {
       getDocument(collection, user.uid).then((userData) => {
         callback({ userData });
+        toast.message('Success', {
+          description: `Welcome, ${userData.name}.`,
+        });
       });
     } else {
       callback(null);
