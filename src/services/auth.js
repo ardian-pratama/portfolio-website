@@ -1,17 +1,17 @@
 import {
   createUserWithEmailAndPassword,
+  GithubAuthProvider,
+  GoogleAuthProvider,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
-  GoogleAuthProvider,
-  GithubAuthProvider,
   signOut,
   updateProfile,
 } from 'firebase/auth';
+import { toast } from 'sonner';
 import { auth } from '../lib/firebase.js';
 import { createDocument, getDocument } from './firestore.js';
 import { uploadFile } from './storage.js';
-import { toast } from 'sonner';
 
 const collection = 'users';
 const googleProvider = new GoogleAuthProvider();
@@ -24,7 +24,6 @@ export const signUp = async ({ name, email, password, image }) => {
     password
   );
   const user = userCredential.user;
-  console.log(user);
 
   let imageData;
   if (image) {
@@ -36,6 +35,7 @@ export const signUp = async ({ name, email, password, image }) => {
   await createDocument(collection, user.uid, {
     name,
     email,
+    provider_id: user.providerData[0].providerId,
     image: imageData,
   });
 
@@ -49,50 +49,64 @@ export const signIn = async ({ email, password }) => {
     password
   );
   const user = userCredential.user;
-
   const userData = await getDocument(collection, user.uid);
-  return { userData };
+
+  return userData;
 };
 
 export const signInWithGoogle = async () => {
-  const userCredential = await signInWithPopup(auth, googleProvider);
-  const user = userCredential.user;
-  const userData = await getDocument(collection, user.uid);
+  try {
+    googleProvider.addScope('https://www.googleapis.com/auth/userinfo.email');
+    const userCredential = await signInWithPopup(auth, googleProvider);
+    const user = userCredential.user;
+    const userData = await getDocument(collection, user.uid);
 
-  if (!userData) {
-    await createDocument(collection, user.uid, {
-      name: user.displayName,
-      email: user.email,
-      image: { url: user.photoURL },
+    if (!userData) {
+      await createDocument(collection, user.uid, {
+        name: user.displayName,
+        email: user.providerData[0].email,
+        provider_id: user.providerData[0].providerId,
+        image: { url: user.photoURL },
+      });
+    }
+
+    toast.message('Success', {
+      description: `You have signed in with Google as ${user.displayName}.`,
     });
-    console.log(user);
+
+    return user;
+  } catch {
+    toast.message('Error', {
+      description: 'An unexpected error occurred. Please try again.',
+    });
   }
-
-  toast.message('Success', {
-    description: `You have signed in with Google as ${user.displayName}.`,
-  });
-
-  return { userData };
 };
 
 export const signInWithGithub = async () => {
-  const userCredential = await signInWithPopup(auth, githubProvider);
-  const user = userCredential.user;
-  const userData = await getDocument(collection, user.uid);
+  try {
+    const userCredential = await signInWithPopup(auth, githubProvider);
+    const user = userCredential.user;
+    const userData = await getDocument(collection, user.uid);
 
-  if (!userData) {
-    await createDocument(collection, user.uid, {
-      name: user.displayName,
-      email: user.email,
-      image: { url: user.photoURL },
+    if (!userData) {
+      await createDocument(collection, user.uid, {
+        name: user.displayName,
+        email: user.providerData[0].email,
+        provider_id: user.providerData[0].providerId,
+        image: { url: user.photoURL },
+      });
+    }
+
+    toast.message('Success', {
+      description: `You have signed in with Github as ${user.displayName}.`,
+    });
+
+    return user;
+  } catch {
+    toast.message('Error', {
+      description: 'An unexpected error occurred. Please try again.',
     });
   }
-
-  toast.message('Success', {
-    description: `You have signed in with Github as ${user.displayName}.`,
-  });
-
-  return { userData };
 };
 
 export const logOut = async () => {

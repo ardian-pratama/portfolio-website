@@ -12,12 +12,18 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { BsGithub } from 'react-icons/bs';
+import { FcGoogle } from 'react-icons/fc';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import InputImage from '../../components/InputImage.jsx';
 import useToggle from '../../hooks/useToggle.jsx';
-import { signUp } from '../../services/auth.js';
+import {
+  signInWithGithub,
+  signInWithGoogle,
+  signUp,
+} from '../../services/auth.js';
 
 const formSchema = z.object({
   name: z
@@ -44,7 +50,6 @@ export default function SignUpPage() {
       image: null,
     },
   });
-  const navigate = useNavigate();
 
   const onSubmit = async (values) => {
     setLoading(true);
@@ -55,7 +60,6 @@ export default function SignUpPage() {
           'Your account has been successfully created. You can now log in.',
       });
       form.reset();
-      navigate('/');
     } catch {
       toast.message('Error', {
         description:
@@ -156,6 +160,15 @@ export default function SignUpPage() {
           </Button>
         </form>
       </Form>
+      <p className='text-center'>Or continue with</p>
+      <div className='grid grid-cols-2 gap-4'>
+        <Button onClick={signInWithGoogle}>
+          <FcGoogle />
+        </Button>
+        <Button onClick={signInWithGithub}>
+          <BsGithub />
+        </Button>
+      </div>
       <p className='text-center'>
         Already have an account?{' '}
         <Link

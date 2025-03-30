@@ -1,6 +1,17 @@
-import { Link, Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth.jsx';
 
 export default function AuthLayout() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/');
+    }
+  }, [user]);
+
   return (
     <div className='flex min-h-dvh flex-col items-center justify-center gap-6 bg-primary-foreground p-8 md:p-16'>
       <div className='grid overflow-hidden rounded-md border bg-background shadow md:grid-cols-2'>

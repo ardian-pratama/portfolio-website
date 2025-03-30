@@ -4,8 +4,10 @@ import {
   doc,
   getDoc,
   getDocs,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from 'firebase/firestore';
 import { db } from '../lib/firebase.js';
 
@@ -22,6 +24,24 @@ export const getDocument = async (collectionName, id) => {
   const docRef = doc(db, collectionName, id);
   const docSnap = await getDoc(docRef);
   return docSnap.exists() ? docSnap.data() : null;
+};
+
+export const getDocumentsByQuery = async (
+  collectionName,
+  fieldName,
+  condition,
+  fieldValue
+) => {
+  const collectionRef = collection(db, collectionName);
+  const querySnapshot = query(
+    collectionRef,
+    where(fieldName, condition, fieldValue)
+  );
+  const snapshot = await getDocs(querySnapshot);
+  return snapshot.docs.map((document) => ({
+    id: document.id,
+    ...document.data(),
+  }));
 };
 
 export const getAllDocuments = async (collectionName) => {
