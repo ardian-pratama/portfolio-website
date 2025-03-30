@@ -2,6 +2,9 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  GithubAuthProvider,
   signOut,
   updateProfile,
 } from 'firebase/auth';
@@ -11,6 +14,8 @@ import { uploadFile } from './storage.js';
 import { toast } from 'sonner';
 
 const collection = 'users';
+const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
 
 export const signUp = async ({ name, email, password, image }) => {
   const userCredential = await createUserWithEmailAndPassword(
@@ -46,7 +51,48 @@ export const signIn = async ({ email, password }) => {
   const user = userCredential.user;
 
   const userData = await getDocument(collection, user.uid);
-  return { user, userData };
+  return { userData };
+};
+
+export const signInWithGoogle = async () => {
+  const userCredential = await signInWithPopup(auth, googleProvider);
+  const user = userCredential.user;
+  const userData = await getDocument(collection, user.uid);
+
+  if (!userData) {
+    await createDocument(collection, user.uid, {
+      name: user.displayName,
+      email: user.email,
+      image: { url: user.photoURL },
+    });
+    console.log(user);
+  }
+
+  toast.message('Success', {
+    description: `You have signed in with Google as ${user.displayName}.`,
+  });
+
+  return { userData };
+};
+
+export const signInWithGithub = async () => {
+  const userCredential = await signInWithPopup(auth, githubProvider);
+  const user = userCredential.user;
+  const userData = await getDocument(collection, user.uid);
+
+  if (!userData) {
+    await createDocument(collection, user.uid, {
+      name: user.displayName,
+      email: user.email,
+      image: { url: user.photoURL },
+    });
+  }
+
+  toast.message('Success', {
+    description: `You have signed in with Github as ${user.displayName}.`,
+  });
+
+  return { userData };
 };
 
 export const logOut = async () => {
@@ -60,10 +106,12 @@ export const authStateListener = (callback) => {
   return onAuthStateChanged(auth, (user) => {
     if (user) {
       getDocument(collection, user.uid).then((userData) => {
-        callback({ userData });
-        toast.message('Success', {
-          description: `Welcome, ${userData.name}.`,
-        });
+        if (userData) {
+          callback({ userData });
+          toast.message('Success', {
+            description: `Welcome, ${userData.name}.`,
+          });
+        }
       });
     } else {
       callback(null);

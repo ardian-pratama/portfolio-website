@@ -16,7 +16,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import useToggle from '../../hooks/useToggle.jsx';
-import { signIn } from '../../services/auth.js';
+import {
+  signIn,
+  signInWithGoogle,
+  signInWithGithub,
+} from '../../services/auth.js';
+import { FcGoogle } from 'react-icons/fc';
+import { BsGithub } from 'react-icons/bs';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Invalid email format' }),
@@ -36,8 +42,8 @@ export default function SignInPage() {
       password: '',
     },
   });
-
   const navigate = useNavigate();
+
   const onSubmit = async (values) => {
     setLoading(true);
     try {
@@ -55,6 +61,10 @@ export default function SignInPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleSignInWithGoogle = async () => {
+    await signInWithGoogle();
   };
 
   return (
@@ -77,7 +87,10 @@ export default function SignInPage() {
               <FormItem>
                 <FormLabel className='text-primary'>Email Address</FormLabel>
                 <FormControl>
-                  <Input {...field} className='text-sm' />
+                  <Input
+                    {...field}
+                    className='text-sm'
+                  />
                 </FormControl>
                 <FormMessage className='font-normal text-red-500' />
               </FormItem>
@@ -121,11 +134,23 @@ export default function SignInPage() {
               </FormItem>
             )}
           />
-          <Button type='submit' disabled={loading}>
+          <Button
+            type='submit'
+            disabled={loading}
+          >
             {loading ? <LoaderCircle className='animate-spin' /> : 'Sign In'}
           </Button>
         </form>
       </Form>
+      <p className='text-center'>Or continue with</p>
+      <div className='grid grid-cols-2 gap-4'>
+        <Button onClick={handleSignInWithGoogle} >
+          <FcGoogle />
+        </Button>
+        <Button>
+          <BsGithub />
+        </Button>
+      </div>
       <p className='text-center'>
         Don't have an account?{' '}
         <Link
