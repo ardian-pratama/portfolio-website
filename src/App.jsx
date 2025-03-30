@@ -1,11 +1,16 @@
+import { Toaster } from '@/components/ui/sonner';
 import { RouterProvider } from 'react-router-dom';
-import { ThemeProvider } from './context/ThemeContext.jsx';
+import AuthProvider from './context/AuthContext.jsx';
+import ThemeProvider from './context/ThemeContext.jsx';
 import { router } from './routes/index.jsx';
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+        <Toaster position='top-right' expand={false} />
+      </ThemeProvider>
+    </AuthProvider>
   );
 }

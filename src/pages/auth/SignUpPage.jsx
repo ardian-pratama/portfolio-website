@@ -9,12 +9,15 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import InputImage from '../../components/InputImage.jsx';
 import useToggle from '../../hooks/useToggle.jsx';
+import { signUp } from '../../services/auth.js';
 
 const formSchema = z.object({
   name: z
@@ -24,12 +27,13 @@ const formSchema = z.object({
   email: z.string().email({ message: 'Invalid email format' }),
   password: z
     .string()
-    .min(5, { message: 'Password must be at least 5 characters' })
+    .min(6, { message: 'Password must be at least 6 characters' })
     .max(50, { message: 'Password must not exceed 50 characters' }),
   image: z.instanceof(File, { message: 'Invalid file type' }).nullable(),
 });
 
 export default function SignUpPage() {
+  const [loading, setLoading] = useState(false);
   const [password, togglePassword] = useToggle(true);
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -40,8 +44,26 @@ export default function SignUpPage() {
       image: null,
     },
   });
-  const onSubmit = (values) => {
-    console.log(values);
+  const navigate = useNavigate();
+
+  const onSubmit = async (values) => {
+    setLoading(true);
+    try {
+      await signUp(values);
+      toast.message('Success', {
+        description:
+          'Your account has been successfully created. You can now log in.',
+      });
+      form.reset();
+      navigate('/');
+    } catch {
+      toast.message('Error', {
+        description:
+          'An error occurred while creating your account. Please try again.',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -88,15 +110,7 @@ export default function SignUpPage() {
             name='password'
             render={({ field }) => (
               <FormItem>
-                <div className='flex items-center justify-between'>
-                  <FormLabel className='text-primary'>Password</FormLabel>
-                  <Link
-                    to='/auth/forgot-password'
-                    className='text-blue-500 underline underline-offset-1'
-                  >
-                    Forgot your password?
-                  </Link>
-                </div>
+                <FormLabel className='text-primary'>Password</FormLabel>
                 <FormControl>
                   <div className='relative'>
                     <Input
@@ -137,7 +151,9 @@ export default function SignUpPage() {
               </FormItem>
             )}
           />
-          <Button type='submit'>Sign Up</Button>
+          <Button type='submit' disabled={loading}>
+            {loading ? <LoaderCircle className='animate-spin' /> : 'Sign Up'}
+          </Button>
         </form>
       </Form>
       <p className='text-center'>

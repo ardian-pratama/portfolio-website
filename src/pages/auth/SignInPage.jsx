@@ -9,21 +9,25 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import useToggle from '../../hooks/useToggle.jsx';
+import { signIn } from '../../services/auth.js';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Invalid email format' }),
   password: z
     .string()
-    .min(5, { message: 'Password must be at least 5 characters' })
+    .min(6, { message: 'Password must be at least 6 characters' })
     .max(50, { message: 'Password must not exceed 50 characters' }),
 });
 
 export default function SignInPage() {
+  const [loading, setLoading] = useState(false);
   const [password, togglePassword] = useToggle(true);
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -32,8 +36,25 @@ export default function SignInPage() {
       password: '',
     },
   });
-  const onSubmit = (values) => {
-    console.log(values);
+
+  const navigate = useNavigate();
+  const onSubmit = async (values) => {
+    setLoading(true);
+    try {
+      await signIn(values);
+      toast.message('Success', {
+        description: 'You have successfully signed in.',
+      });
+      form.reset();
+      navigate('/');
+    } catch {
+      toast.message('Error', {
+        description:
+          'Failed to sign in. Please check your credentials and try again.',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -100,7 +121,9 @@ export default function SignInPage() {
               </FormItem>
             )}
           />
-          <Button type='submit'>Sign In</Button>
+          <Button type='submit' disabled={loading}>
+            {loading ? <LoaderCircle className='animate-spin' /> : 'Sign In'}
+          </Button>
         </form>
       </Form>
       <p className='text-center'>

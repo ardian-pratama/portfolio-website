@@ -7,7 +7,7 @@ const initialState = {
 
 export const ThemeContext = createContext(initialState);
 
-export function ThemeProvider({
+export default function ThemeProvider({
   children,
   defaultTheme = 'light',
   storageKey = 'theme',

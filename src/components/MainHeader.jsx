@@ -1,6 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Menu } from 'lucide-react';
+import ProfileDropdownMenu from './ProfileDropdownMenu.jsx';
 import ThemeButton from './ThemeButton.jsx';
 
 export default function MainHeader({ toggle }) {
@@ -11,13 +11,7 @@ export default function MainHeader({ toggle }) {
           <Menu />
         </Button>
         <ThemeButton />
-        <Avatar>
-          <AvatarImage
-            src='https://github.com/shadcn.png'
-            className='object-cover'
-          />
-          <AvatarFallback />
-        </Avatar>
+        <ProfileDropdownMenu />
       </div>
     </header>
   );
