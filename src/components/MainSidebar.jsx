@@ -10,7 +10,7 @@ export default function MainSidebar({ state, toggle }) {
   return (
     <nav
       ref={ref}
-      className={`absolute inset-y-0 left-0 flex w-64 flex-col rounded-br-xl rounded-tr-xl bg-primary-foreground transition-all duration-500 ${
+      className={`absolute inset-y-0 left-0 flex w-64 flex-col rounded-br-xl rounded-tr-xl bg-primary-foreground transition-all duration-500 z-10 ${
         state ? 'translate-x-0 border shadow' : '-translate-x-full'
       }`}
     >
