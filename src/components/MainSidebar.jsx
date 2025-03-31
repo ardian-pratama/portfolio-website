@@ -1,16 +1,19 @@
-import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { BookUser, House, X } from 'lucide-react';
 import { useRef } from 'react';
+import { useLocation } from 'react-router-dom';
+import { NavHashLink } from 'react-router-hash-link';
 import useClickOutside from '../hooks/useClickOutside.jsx';
 
 export default function MainSidebar({ state, toggle }) {
   const ref = useRef(null);
+  const location = useLocation();
   useClickOutside(ref, () => toggle(false));
 
   return (
     <nav
       ref={ref}
-      className={`absolute inset-y-0 left-0 flex w-64 flex-col rounded-br-xl rounded-tr-xl bg-primary-foreground transition-all duration-500 z-10 ${
+      className={`fixed inset-y-0 left-0 z-10 flex w-64 flex-col rounded-br-xl rounded-tr-xl bg-primary-foreground transition-all duration-500 ${
         state ? 'translate-x-0 border shadow' : '-translate-x-full'
       }`}
     >
@@ -19,12 +22,31 @@ export default function MainSidebar({ state, toggle }) {
           <X />
         </Button>
       </div>
-      <div className='p-4'>
-        <p className='text-justify'>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates
-          corporis non asperiores velit, iure exercitationem doloremque
-          consequatur, laboriosam earum eum.
-        </p>
+      <div className='flex flex-col gap-2 p-4' onClick={toggle}>
+        <NavHashLink
+          to='/#home'
+          className={buttonVariants({
+            variant:
+              location.hash === '#home' ||
+              (location.pathname === '/' && location.hash === '')
+                ? 'default'
+                : 'ghost',
+            className: '!justify-start',
+          })}
+          smooth
+        >
+          <House className='mr-2' /> Home
+        </NavHashLink>
+        <NavHashLink
+          to='/#tentang-saya'
+          className={buttonVariants({
+            variant: location.hash === '#tentang-saya' ? 'default' : 'ghost',
+            className: '!justify-start',
+          })}
+          smooth
+        >
+          <BookUser className='mr-2' /> Tentang Saya
+        </NavHashLink>
       </div>
     </nav>
   );

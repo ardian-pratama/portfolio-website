@@ -1,5 +1,5 @@
-import useTheme from '../../hooks/useTheme.jsx';
 import { Toaster as Sonner } from 'sonner';
+import useTheme from '../../hooks/useTheme.jsx';
 
 const Toaster = ({ ...props }) => {
   const { theme } = useTheme();
