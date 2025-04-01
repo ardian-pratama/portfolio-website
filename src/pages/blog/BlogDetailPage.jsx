@@ -60,12 +60,10 @@ export default function BlogDetailPage() {
       </div>
       <div className='mt-10'>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati
-          corrupti, inventore esse aliquam, hic ipsa. Lorem ipsum dolor sit
-          amet, consectetur adipisicing elit. Et, rerum porro quod alias? Nulla,
-          odio sit voluptates quis aliquid quam eligendi officiis aspernatur
-          repellendus itaque, nihil deleniti, consectetur libero totam porro.
-          Quae quidem nesciunt, ullam praesentium est debitis atque minus.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod
+          molestias cum temporibus harum debitis consectetur a obcaecati vero,
+          ea alias mollitia, commodi dolore at eveniet recusandae minima
+          pariatur fuga! Natus.
         </p>
       </div>
       <Carousel

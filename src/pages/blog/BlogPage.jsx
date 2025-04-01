@@ -1,7 +1,17 @@
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
+import { Await, defer, useLoaderData } from 'react-router-dom';
 import BlogCard from '../../components/BlogCard.jsx';
+import { getAllBlogs } from '../../services/blog.js';
+
+export const loader = async () => {
+  const blogs = await getAllBlogs();
+
+  return defer({ blogs });
+};
 
 export default function BlogPage() {
+  const { blogs } = useLoaderData();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -14,9 +24,15 @@ export default function BlogPage() {
         serta mengeksplorasi berbagai hal menarik di sekitar.
       </p>
       <div className='grid gap-4 md:grid-cols-2'>
-        <BlogCard />
-        <BlogCard />
-        <BlogCard />
+        <Suspense fallback={<p>loading...</p>}>
+          <Await resolve={blogs}>
+            {(blogsData) =>
+              blogsData.map((blog, index) => (
+                <BlogCard key={index} data={blog} />
+              ))
+            }
+          </Await>
+        </Suspense>
       </div>
     </section>
   );

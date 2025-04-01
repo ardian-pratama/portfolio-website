@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import MainLayout from '../layouts/MainLayout.jsx';
-import HomePage from '../pages/HomePage.jsx';
+import HomePage, { loader as homePageLoader } from '../pages/HomePage.jsx';
 import NotFoundPage from '../pages/NotFoundPage.jsx';
 import BlogDetailPage from '../pages/blog/BlogDetailPage.jsx';
-import BlogPage from '../pages/blog/BlogPage.jsx';
+import BlogPage, { loader as blogPageLoader } from '../pages/blog/BlogPage.jsx';
 
 import AuthLayout from '../layouts/AuthLayout.jsx';
 import SignInPage from '../pages/auth/SignInPage.jsx';
@@ -18,6 +18,7 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: HomePage,
+        loader: homePageLoader,
       },
       {
         path: 'blog',
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
           {
             index: true,
             Component: BlogPage,
+            loader: blogPageLoader,
           },
           {
             path: ':id',

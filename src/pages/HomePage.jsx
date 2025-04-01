@@ -1,11 +1,21 @@
 import { buttonVariants } from '@/components/ui/button';
 import { MoveRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Suspense } from 'react';
+import { Await, Link, defer, useLoaderData } from 'react-router-dom';
 import AboutSection from '../components/AboutSection.jsx';
 import BlogCard from '../components/BlogCard.jsx';
 import HeroSection from '../components/HeroSection.jsx';
+import { getAllBlogs } from '../services/blog.js';
+
+export const loader = async () => {
+  const blogs = await getAllBlogs();
+
+  return defer({ blogs });
+};
 
 export default function HomePage() {
+  const { blogs } = useLoaderData();
+
   return (
     <>
       <HeroSection />
@@ -17,7 +27,15 @@ export default function HomePage() {
           serta mengeksplorasi berbagai hal menarik di sekitar.
         </p>
         <div className='grid gap-4 md:grid-cols-2'>
-          <BlogCard />
+          <Suspense fallback={<p>loading...</p>}>
+            <Await resolve={blogs}>
+              {(blogsData) =>
+                blogsData.map((blog, index) => (
+                  <BlogCard key={index} data={blog} />
+                ))
+              }
+            </Await>
+          </Suspense>
         </div>
         <Link to='/blog' className={buttonVariants({ className: 'self-end' })}>
           lihat selengkapnya
