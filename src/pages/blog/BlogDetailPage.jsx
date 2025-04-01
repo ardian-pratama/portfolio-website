@@ -1,20 +1,24 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { buttonVariants } from '@/components/ui/button';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel';
-import Autoplay from 'embla-carousel-autoplay';
-import { Link as LinkIcon, MoveLeft } from 'lucide-react';
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { MoveLeft } from 'lucide-react';
+import { Fragment, Suspense, useEffect } from 'react';
+import { Await, defer, Link, useLoaderData } from 'react-router-dom';
 import BlogComment from '../../components/BlogComment.jsx';
+import BlogDetailCarousel from '../../components/BlogDetailCarousel.jsx';
+import BlogDetailFooter from '../../components/BlogDetailFooter.jsx';
+import BlogDetailHeader from '../../components/BlogDetailHeader.jsx';
+import BlogDetailMain from '../../components/BlogDetailMain.jsx';
+import { getBlog } from '../../services/blog.js';
+
+export const loader = async ({ params }) => {
+  const blog = await getBlog(params.slug);
+
+  console.log(blog);
+  return defer({ blog });
+};
 
 export default function BlogDetailPage() {
+  const { blog } = useLoaderData();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -25,85 +29,27 @@ export default function BlogDetailPage() {
         <MoveLeft className='mr-2' />
         Kembali
       </Link>
-      <div className='grid gap-4 md:grid-cols-2'>
-        <img
-          src='/images/hero-image.png'
-          alt='Ardian Pratama'
-          className='aspect-video rounded-md object-contain'
-        />
-        <div className='my-auto flex flex-col gap-2'>
-          <div className='flex flex-wrap justify-end gap-2'>
-            <Badge variant='outline'>Badge</Badge>
-            <Badge variant='outline'>Badge</Badge>
-            <Badge variant='outline'>Badge</Badge>
-          </div>
-          <h1 className='text-base font-bold text-primary'>
-            Lorem ipsum dolor
-          </h1>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto,
-            laudantium!
-          </p>
-          <div className='flex items-center gap-2'>
-            <Avatar className='h-7 w-7'>
-              <AvatarImage
-                src='/images/hero-image.png'
-                alt='Ardian Pratama'
-                className='object-cover'
-              />
-              <AvatarFallback />
-            </Avatar>
-            <p className='font-bold text-primary'>Ardian Pratama</p>
-          </div>
-          <p className='self-end text-xs'>3 jam yang lalu</p>
-        </div>
-      </div>
-      <div className='mt-10'>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod
-          molestias cum temporibus harum debitis consectetur a obcaecati vero,
-          ea alias mollitia, commodi dolore at eveniet recusandae minima
-          pariatur fuga! Natus.
-        </p>
-      </div>
-      <Carousel
-        className='mx-auto w-full max-w-sm'
-        plugins={[
-          Autoplay({
-            delay: 3000,
-          }),
-        ]}
-      >
-        <CarouselContent>
-          <CarouselItem>
-            <img
-              src='/images/hero-image.png'
-              alt='Ardian Pratama'
-              className='aspect-video object-contain'
-            />
-          </CarouselItem>
-          <CarouselItem>
-            <img
-              src='/images/hero-image.png'
-              alt='Ardian Pratama'
-              className='aspect-video object-contain'
-            />
-          </CarouselItem>
-        </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
-      </Carousel>
-      <div className='flex flex-col gap-4'>
-        <h2 className='text-base font-bold text-primary'>Tautan</h2>
-      </div>
-      <Link
-        className={buttonVariants({
-          className: 'flex w-fit items-center !p-0 !text-blue-500',
-          variant: 'link',
-        })}
-      >
-        <LinkIcon className='h-4 w-4' /> Lorem ipsum dolor.
-      </Link>
+      <Suspense fallback={<p>loading...</p>}>
+        <Await resolve={blog}>
+          {(blogsData) =>
+            blogsData.map((blog, index) => (
+              <Fragment key={index}>
+                <BlogDetailHeader
+                  thumbnail={blog.thumbnail}
+                  title={blog.title}
+                  tags={blog.tags}
+                  description={blog.description}
+                  author={blog.author}
+                  created_at={blog.created_at}
+                />
+                <BlogDetailMain contents={blog.contents} />
+                <BlogDetailCarousel images={blog.images} />
+                <BlogDetailFooter links={blog.links} />
+              </Fragment>
+            ))
+          }
+        </Await>
+      </Suspense>
       <BlogComment />
     </section>
   );

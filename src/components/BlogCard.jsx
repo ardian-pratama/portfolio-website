@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
+import { formatTimestamp } from '../lib/utils.js';
 
 export default function BlogCard({ data }) {
   return (
@@ -22,7 +23,9 @@ export default function BlogCard({ data }) {
         <Link to={`/blog/${data.slug}`} className='text-blue-500'>
           Selengkapnya
         </Link>
-        <p className='self-end text-xs'>{data.created_at.seconds}</p>
+        <p className='self-end text-xs'>
+          {formatTimestamp(data.created_at.seconds)}
+        </p>
       </div>
     </div>
   );

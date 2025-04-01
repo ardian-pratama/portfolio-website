@@ -20,8 +20,8 @@ export default function ProfileDropdownMenu() {
           <DropdownMenuTrigger asChild>
             <Avatar>
               <AvatarImage
-                src={user.image.url}
-                alt={user.name}
+                src={user.image.src}
+                alt={user.image.alt}
                 className='object-cover'
               />
               <AvatarFallback />
@@ -32,8 +32,8 @@ export default function ProfileDropdownMenu() {
               <div className='flex items-center justify-between gap-2'>
                 <Avatar className='shrink-0 rounded-md'>
                   <AvatarImage
-                    src={user.image.url}
-                    alt={user.name}
+                    src={user.image.src}
+                    alt={user.image.alt}
                     className='rounded-md object-cover'
                   />
                   <AvatarFallback />

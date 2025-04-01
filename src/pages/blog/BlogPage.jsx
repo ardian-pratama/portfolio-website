@@ -5,6 +5,7 @@ import { getAllBlogs } from '../../services/blog.js';
 
 export const loader = async () => {
   const blogs = await getAllBlogs();
+  console.log(blogs);
 
   return defer({ blogs });
 };

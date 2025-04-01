@@ -3,7 +3,9 @@ import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout.jsx';
 import HomePage, { loader as homePageLoader } from '../pages/HomePage.jsx';
 import NotFoundPage from '../pages/NotFoundPage.jsx';
-import BlogDetailPage from '../pages/blog/BlogDetailPage.jsx';
+import BlogDetailPage, {
+  loader as loaderBlogDetailPage,
+} from '../pages/blog/BlogDetailPage.jsx';
 import BlogPage, { loader as blogPageLoader } from '../pages/blog/BlogPage.jsx';
 
 import AuthLayout from '../layouts/AuthLayout.jsx';
@@ -29,8 +31,9 @@ export const router = createBrowserRouter([
             loader: blogPageLoader,
           },
           {
-            path: ':id',
+            path: ':slug',
             Component: BlogDetailPage,
+            loader: loaderBlogDetailPage,
           },
         ],
       },
