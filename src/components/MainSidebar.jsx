@@ -1,7 +1,7 @@
 import { Button, buttonVariants } from '@/components/ui/button';
-import { BookUser, House, X } from 'lucide-react';
+import { BookUser, House, NotebookText, X } from 'lucide-react';
 import { useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { NavHashLink } from 'react-router-hash-link';
 import useClickOutside from '../hooks/useClickOutside.jsx';
 
@@ -47,6 +47,17 @@ export default function MainSidebar({ state, toggle }) {
         >
           <BookUser className='mr-2' /> Tentang Saya
         </NavHashLink>
+        <NavLink
+          to='/blog'
+          className={({ isActive }) =>
+            buttonVariants({
+              variant: isActive ? 'default' : 'ghost',
+              className: '!justify-start',
+            })
+          }
+        >
+          <NotebookText className='mr-2' /> Blog
+        </NavLink>
       </div>
     </nav>
   );

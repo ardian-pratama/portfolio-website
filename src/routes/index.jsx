@@ -3,6 +3,8 @@ import { createBrowserRouter } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout.jsx';
 import HomePage from '../pages/HomePage.jsx';
 import NotFoundPage from '../pages/NotFoundPage.jsx';
+import BlogDetailPage from '../pages/blog/BlogDetailPage.jsx';
+import BlogPage from '../pages/blog/BlogPage.jsx';
 
 import AuthLayout from '../layouts/AuthLayout.jsx';
 import SignInPage from '../pages/auth/SignInPage.jsx';
@@ -16,6 +18,19 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: HomePage,
+      },
+      {
+        path: 'blog',
+        children: [
+          {
+            index: true,
+            Component: BlogPage,
+          },
+          {
+            path: ':id',
+            Component: BlogDetailPage,
+          },
+        ],
       },
     ],
   },

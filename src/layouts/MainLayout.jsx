@@ -11,7 +11,7 @@ export default function MainLayout() {
     <div className='container mx-auto flex min-h-dvh flex-col overflow-x-hidden'>
       <MainHeader toggle={toggleSidebar} />
       <MainSidebar state={sidebar} toggle={toggleSidebar} />
-      <main className='flex flex-1 flex-col gap-4 p-4'>
+      <main className='flex flex-1 flex-col p-4'>
         <Outlet />
       </main>
       <MainFooter />
