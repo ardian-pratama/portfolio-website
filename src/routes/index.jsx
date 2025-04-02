@@ -31,7 +31,7 @@ export const router = createBrowserRouter([
             loader: blogPageLoader,
           },
           {
-            path: ':slug',
+            path: ':id',
             Component: BlogDetailPage,
             loader: loaderBlogDetailPage,
           },

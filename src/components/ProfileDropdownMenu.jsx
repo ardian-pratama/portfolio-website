@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { buttonVariants } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { CircleUserRound, LogOut } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import useAuth from '../hooks/useAuth.jsx';
 import { logOut } from '../services/auth.js';
 
@@ -15,7 +17,7 @@ export default function ProfileDropdownMenu() {
 
   return (
     <>
-      {user && (
+      {user ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar>
@@ -56,6 +58,10 @@ export default function ProfileDropdownMenu() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+      ) : (
+        <Link to='/auth/sign-in' className={buttonVariants()}>
+          Masuk
+        </Link>
       )}
     </>
   );

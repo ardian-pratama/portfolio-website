@@ -8,7 +8,7 @@ export default function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = authStateListener((data) => {
-      setUser(data?.userData);
+      setUser(data);
     });
 
     return () => unsubscribe();

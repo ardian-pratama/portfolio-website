@@ -12,5 +12,5 @@ export const cn = (...inputs) => {
 };
 
 export const formatTimestamp = (timestamp) => {
-  return dayjs(new Date(timestamp * 1000)).fromNow();
+  return dayjs(new Date(timestamp)).fromNow();
 };

@@ -7,7 +7,7 @@ export default function BlogDetailHeader({
   title,
   tags,
   description,
-  author,
+  user,
   created_at,
 }) {
   return (
@@ -30,13 +30,13 @@ export default function BlogDetailHeader({
         <div className='flex items-center gap-2'>
           <Avatar className='h-7 w-7'>
             <AvatarImage
-              src={author.image.src}
-              alt={author.image.alt}
+              src={user.image.src}
+              alt={user.image.alt}
               className='object-cover'
             />
             <AvatarFallback />
           </Avatar>
-          <p className='font-bold text-primary'>{author.name}</p>
+          <p className='font-bold text-primary'>{user.name}</p>
         </div>
         <p className='self-end text-xs'>
           {formatTimestamp(created_at.seconds)}

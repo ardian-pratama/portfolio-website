@@ -4,6 +4,8 @@ import {
   doc,
   getDoc,
   getDocs,
+  limit,
+  orderBy,
   query,
   setDoc,
   updateDoc,
@@ -23,7 +25,23 @@ export const createDocument = async (collectionName, id, data) => {
 export const getDocument = async (collectionName, id) => {
   const docRef = doc(db, collectionName, id);
   const docSnap = await getDoc(docRef);
+
   return docSnap.exists() ? docSnap.data() : null;
+};
+
+export const getLatestDocuments = async (collectionName, limitData) => {
+  const collectionRef = collection(db, collectionName);
+  const querySnapshot = query(
+    collectionRef,
+    orderBy('created_at', 'desc'),
+    limit(limitData)
+  );
+  const snapshot = await getDocs(querySnapshot);
+
+  return snapshot.docs.map((document) => ({
+    id: document.id,
+    ...document.data(),
+  }));
 };
 
 export const getDocumentsByQuery = async (
@@ -38,6 +56,7 @@ export const getDocumentsByQuery = async (
     where(fieldName, condition, fieldValue)
   );
   const snapshot = await getDocs(querySnapshot);
+
   return snapshot.docs.map((document) => ({
     id: document.id,
     ...document.data(),
@@ -47,6 +66,7 @@ export const getDocumentsByQuery = async (
 export const getAllDocuments = async (collectionName) => {
   const colRef = collection(db, collectionName);
   const snapshot = await getDocs(colRef);
+
   return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 };
 
