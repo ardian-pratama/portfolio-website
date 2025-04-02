@@ -57,7 +57,8 @@ export default function InputImage({ value, setValue }) {
           </Button>
         </div>
       )}
-      <p className='text-center'>Drag & drop an image or click to select one</p>
+      <p className='text-center'>Seret & lepas gambar atau klik untuk memilih
+      gambar</p>
     </div>
   );
 }

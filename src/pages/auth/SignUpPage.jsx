@@ -28,14 +28,14 @@ import {
 const formSchema = z.object({
   name: z
     .string()
-    .min(2, { message: 'Name must be at least 2 characters' })
-    .max(50, { message: 'Name must not exceed 50 characters' }),
-  email: z.string().email({ message: 'Invalid email format' }),
+    .min(2, { message: 'Nama harus memiliki minimal 2 karakter' })
+    .max(50, { message: 'Nama tidak boleh lebih dari 50 karakter' }),
+  email: z.string().email({ message: 'Format email tidak valid' }),
   password: z
     .string()
-    .min(6, { message: 'Password must be at least 6 characters' })
-    .max(50, { message: 'Password must not exceed 50 characters' }),
-  image: z.instanceof(File, { message: 'Invalid file type' }).nullable(),
+    .min(6, { message: 'Kata sandi harus memiliki minimal 6 karakter' })
+    .max(50, { message: 'Kata sandi tidak boleh lebih dari 50 karakter' }),
+  image: z.instanceof(File, { message: 'Tipe file tidak valid' }).nullable(),
 });
 
 export default function SignUpPage() {
@@ -51,19 +51,19 @@ export default function SignUpPage() {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     setLoading(true);
     try {
       await signUp(values);
-      toast.message('Success', {
+      toast.message('Berhasil', {
         description:
-          'Your account has been successfully created. You can now log in.',
+          'Akun Anda telah berhasil dibuat. Anda sekarang dapat masuk.',
       });
       form.reset();
     } catch {
-      toast.message('Error', {
+      toast.message('Gagal', {
         description:
-          'An error occurred while creating your account. Please try again.',
+          'Terjadi kesalahan saat membuat akun Anda. Silakan coba lagi.',
       });
     } finally {
       setLoading(false);
@@ -73,10 +73,10 @@ export default function SignUpPage() {
   return (
     <div className='flex max-w-xs flex-col gap-4 p-6'>
       <h1 className='text-center text-2xl font-bold text-primary'>
-        Create a new account
+        Buat akun baru
       </h1>
       <p className='text-justify'>
-        Enter your details below to sign up for a new account.
+        Masukkan detail Anda di bawah ini untuk mendaftar akun baru.
       </p>
       <Form {...form}>
         <form
@@ -88,9 +88,12 @@ export default function SignUpPage() {
             name='name'
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='text-primary'>Name</FormLabel>
+                <FormLabel className='text-primary'>Nama</FormLabel>
                 <FormControl>
-                  <Input {...field} className='text-sm' />
+                  <Input
+                    {...field}
+                    className='text-sm'
+                  />
                 </FormControl>
                 <FormMessage className='font-normal text-red-500' />
               </FormItem>
@@ -101,9 +104,12 @@ export default function SignUpPage() {
             name='email'
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='text-primary'>Email Address</FormLabel>
+                <FormLabel className='text-primary'>Email</FormLabel>
                 <FormControl>
-                  <Input {...field} className='text-sm' />
+                  <Input
+                    {...field}
+                    className='text-sm'
+                  />
                 </FormControl>
                 <FormMessage className='font-normal text-red-500' />
               </FormItem>
@@ -144,23 +150,26 @@ export default function SignUpPage() {
             name='image'
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='text-foreground'>Image</FormLabel>
+                <FormLabel className='text-foreground'>Gambar</FormLabel>
                 <FormControl>
                   <InputImage
                     value={form.watch('image')}
-                    setValue={(file) => field.onChange(file)}
+                    setValue={file => field.onChange(file)}
                   />
                 </FormControl>
                 <FormMessage className='font-normal text-red-500' />
               </FormItem>
             )}
           />
-          <Button type='submit' disabled={loading}>
-            {loading ? <LoaderCircle className='animate-spin' /> : 'Sign Up'}
+          <Button
+            type='submit'
+            disabled={loading}
+          >
+            {loading ? <LoaderCircle className='animate-spin' /> : 'Daftar'}
           </Button>
         </form>
       </Form>
-      <p className='text-center'>Or continue with</p>
+      <p className='text-center'>Atau lanjutkan dengan</p>
       <div className='grid grid-cols-2 gap-4'>
         <Button onClick={signInWithGoogle}>
           <FcGoogle />
@@ -170,12 +179,12 @@ export default function SignUpPage() {
         </Button>
       </div>
       <p className='text-center'>
-        Already have an account?{' '}
+        Sudah memiliki akun?{' '}
         <Link
-          to='/auth/sign-in'
+          to='/akun/masuk'
           className='text-blue-500 underline underline-offset-1'
         >
-          Sign In
+          Masuk
         </Link>
       </p>
     </div>

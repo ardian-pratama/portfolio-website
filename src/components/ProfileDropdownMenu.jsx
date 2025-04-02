@@ -48,18 +48,18 @@ export default function ProfileDropdownMenu() {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <CircleUserRound className='mr-1' /> Profile
+              <CircleUserRound className='mr-1' /> Profil
             </DropdownMenuItem>
             <DropdownMenuItem
               className='text-red-500 focus:text-red-500'
               onClick={logOut}
             >
-              <LogOut className='mr-1' /> Log out
+              <LogOut className='mr-1' /> Keluar
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <Link to='/auth/sign-in' className={buttonVariants()}>
+        <Link to='/akun/masuk' className={buttonVariants()}>
           Masuk
         </Link>
       )}

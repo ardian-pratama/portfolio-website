@@ -2,7 +2,7 @@ import { TypeAnimation } from 'react-type-animation';
 
 export default function HeroSection() {
   return (
-    <section id='home' className='grid gap-4 pt-20 md:grid-cols-2'>
+    <section id='beranda' className='grid gap-4 pt-20 md:grid-cols-2'>
       <div className='my-auto flex flex-col gap-4'>
         <div className='flex flex-col'>
           <h1 className='font-agbalumo text-6xl font-bold text-primary'>

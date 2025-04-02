@@ -25,11 +25,11 @@ import {
 } from '../../services/auth.js';
 
 const formSchema = z.object({
-  email: z.string().email({ message: 'Invalid email format' }),
+  email: z.string().email({ message: 'Format email tidak valid' }),
   password: z
     .string()
-    .min(6, { message: 'Password must be at least 6 characters' })
-    .max(50, { message: 'Password must not exceed 50 characters' }),
+    .min(6, { message: 'Kata sandi harus memiliki minimal 6 karakter' })
+    .max(50, { message: 'Kata sandi tidak boleh lebih dari 50 karakter' }),
 });
 
 export default function SignInPage() {
@@ -43,18 +43,18 @@ export default function SignInPage() {
     },
   });
 
-  const onSubmit = async (values) => {
+  const onSubmit = async values => {
     setLoading(true);
     try {
       await signIn(values);
-      toast.message('Success', {
-        description: 'You have successfully signed in.',
+      toast.message('Berhasil', {
+        description: 'Anda berhasil masuk.',
       });
       form.reset();
     } catch {
-      toast.message('Error', {
+      toast.message('Gagal', {
         description:
-          'Failed to sign in. Please check your credentials and try again.',
+          'Gagal masuk. Silakan periksa kredensial Anda dan coba lagi.',
       });
     } finally {
       setLoading(false);
@@ -64,10 +64,10 @@ export default function SignInPage() {
   return (
     <div className='flex max-w-xs flex-col gap-4 p-6'>
       <h1 className='text-center text-2xl font-bold text-primary'>
-        Sign in to your account
+        Masuk ke akun Anda
       </h1>
       <p className='text-justify'>
-        Enter your email below to sign in to your account.
+        Masukkan email Anda di bawah ini untuk masuk ke akun Anda.
       </p>
       <Form {...form}>
         <form
@@ -79,9 +79,12 @@ export default function SignInPage() {
             name='email'
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='text-primary'>Email Address</FormLabel>
+                <FormLabel className='text-primary'>Email</FormLabel>
                 <FormControl>
-                  <Input {...field} className='text-sm' />
+                  <Input
+                    {...field}
+                    className='text-sm'
+                  />
                 </FormControl>
                 <FormMessage className='font-normal text-red-500' />
               </FormItem>
@@ -98,7 +101,7 @@ export default function SignInPage() {
                     to='/auth/forgot-password'
                     className='text-blue-500 underline underline-offset-1'
                   >
-                    Forgot your password?
+                    Lupa kata sandi?
                   </Link>
                 </div>
                 <FormControl>
@@ -125,12 +128,15 @@ export default function SignInPage() {
               </FormItem>
             )}
           />
-          <Button type='submit' disabled={loading}>
-            {loading ? <LoaderCircle className='animate-spin' /> : 'Sign In'}
+          <Button
+            type='submit'
+            disabled={loading}
+          >
+            {loading ? <LoaderCircle className='animate-spin' /> : 'Masuk'}
           </Button>
         </form>
       </Form>
-      <p className='text-center'>Or continue with</p>
+      <p className='text-center'>Atau lanjutkan dengan</p>
       <div className='grid grid-cols-2 gap-4'>
         <Button onClick={signInWithGoogle}>
           <FcGoogle />
@@ -140,12 +146,12 @@ export default function SignInPage() {
         </Button>
       </div>
       <p className='text-center'>
-        Don't have an account?{' '}
+        Belum punya akun?{' '}
         <Link
-          to='/auth/sign-up'
+          to='/akun/daftar'
           className='text-blue-500 underline underline-offset-1'
         >
-          Sign Up
+          Daftar
         </Link>
       </p>
     </div>

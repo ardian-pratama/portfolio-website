@@ -41,14 +41,14 @@ export default function BlogComment({ blog_id }) {
   const { user } = useAuth();
 
   useEffect(() => {
-    const unsubscribe = readBlogComments(blog_id, (data) => {
+    const unsubscribe = readBlogComments(blog_id, data => {
       setComments(data);
     });
 
     return () => unsubscribe();
   }, [blog_id]);
 
-  const onSubmit = async (value) => {
+  const onSubmit = async value => {
     setLoading(true);
     try {
       if (!user) {
@@ -66,12 +66,12 @@ export default function BlogComment({ blog_id }) {
         },
         comment: value.comment,
       });
-      toast.message('Success', {
+      toast.message('Berhasil', {
         description: 'Komentar Anda berhasil diposting.',
       });
       form.reset();
     } catch {
-      toast.message('Error', {
+      toast.message('Gagal', {
         description: 'Gagal memposting komentar. Silakan coba lagi.',
       });
     } finally {
@@ -83,11 +83,11 @@ export default function BlogComment({ blog_id }) {
     setDeleteLoading(true);
     try {
       await deleteBlogComment(blog_id, id);
-      toast.message('Success', {
+      toast.message('Berhasil', {
         description: 'Komentar Anda berhasil dihapus.',
       });
     } catch {
-      toast.message('Error', {
+      toast.message('Gagal', {
         description: 'Gagal menghapus komentar. Silakan coba lagi.',
       });
     } finally {
@@ -118,7 +118,11 @@ export default function BlogComment({ blog_id }) {
           }
 
           return (
-            <OtherComment key={index} user={comment.user} comment={comment} />
+            <OtherComment
+              key={index}
+              user={comment.user}
+              comment={comment}
+            />
           );
         })}
         <Form {...form}>
@@ -130,7 +134,10 @@ export default function BlogComment({ blog_id }) {
                 <FormItem>
                   <div className='flex items-center gap-2'>
                     <FormControl className='flex-1'>
-                      <Input {...field} className='text-sm' />
+                      <Input
+                        {...field}
+                        className='text-sm'
+                      />
                     </FormControl>
                     <Button type='submit'>
                       {loading ? (

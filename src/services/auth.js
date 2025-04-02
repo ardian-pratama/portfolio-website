@@ -86,14 +86,14 @@ export const signInWithGoogle = async () => {
       });
     }
 
-    toast.message('Success', {
-      description: `You have signed in with Google as ${user.displayName}.`,
+    toast.message('Berhasil', {
+      description: `Anda berhasil masuk dengan Google sebagai ${user.displayName}.`,
     });
 
     return user;
   } catch {
-    toast.message('Error', {
-      description: 'An unexpected error occurred. Please try again.',
+    toast.message('Gagal', {
+      description: 'Terjadi kesalahan tak terduga. Silakan coba lagi.',
     });
   }
 };
@@ -117,34 +117,34 @@ export const signInWithGithub = async () => {
       });
     }
 
-    toast.message('Success', {
-      description: `You have signed in with Github as ${user.displayName}.`,
+    toast.message('Berhasil', {
+      description: `Anda berhasil masuk dengan Github sebagai ${user.displayName}.`,
     });
 
     return user;
   } catch {
-    toast.message('Error', {
-      description: 'An unexpected error occurred. Please try again.',
+    toast.message('Gagal', {
+      description: 'Terjadi kesalahan tak terduga. Silakan coba lagi.',
     });
   }
 };
 
 export const logOut = async () => {
   await signOut(auth);
-  toast.message('Success', {
-    description: 'You have successfully signed out. See you next time.',
+  toast.message('Berhasil', {
+    description: 'Anda telah berhasil keluar. Sampai jumpa lagi.',
   });
 };
 
-export const authStateListener = (callback) => {
-  return onAuthStateChanged(auth, async (user) => {
+export const authStateListener = callback => {
+  return onAuthStateChanged(auth, async user => {
     if (user) {
       const userRef = doc(db, 'users', user.uid);
       const userData = await getDoc(userRef);
       if (userData.exists()) {
         callback({ id: userData.id, ...userData.data() });
-        toast.message('Success', {
-          description: `Welcome, ${userData.data().name}.`,
+        toast.message('Berhasil', {
+          description: `Selamat datang, ${userData.data().name}.`,
         });
       }
     } else {

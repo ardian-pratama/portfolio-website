@@ -40,15 +40,15 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/auth',
+    path: '/akun',
     Component: AuthLayout,
     children: [
       {
-        path: 'sign-in',
+        path: 'masuk',
         Component: SignInPage,
       },
       {
-        path: 'sign-up',
+        path: 'daftar',
         Component: SignUpPage,
       },
     ],

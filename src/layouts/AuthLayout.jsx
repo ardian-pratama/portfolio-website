@@ -17,25 +17,28 @@ export default function AuthLayout() {
       <div className='grid overflow-hidden rounded-md border bg-background shadow md:grid-cols-2'>
         <Outlet />
         <div className='hidden max-w-xs items-center justify-center bg-blue-500 p-4 md:flex'>
-          <img src='/auth-image.svg' alt='Auth image' />
+          <img
+            src='/auth-image.svg'
+            alt='Auth image'
+          />
         </div>
       </div>
       <p className='text-justify'>
-        By clicking continue, you agree to our{' '}
+        Dengan melanjutkan, Anda setuju dengan{' '}
         <Link
           to='/auth/terms-of-service'
           className='text-blue-500 underline underline-offset-1'
         >
-          Terms of Service
+          Syarat dan Ketentuan
         </Link>{' '}
-        and{' '}
+        dan{' '}
         <Link
           to='/auth/privacy-policy'
           className='text-blue-500 underline underline-offset-1'
         >
-          Privacy Policy
+          Kebijakan Privasi
         </Link>
-        .
+        {' '}kami.
       </p>
     </div>
   );

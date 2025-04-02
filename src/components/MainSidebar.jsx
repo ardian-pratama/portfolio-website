@@ -24,10 +24,10 @@ export default function MainSidebar({ state, toggle }) {
       </div>
       <div className='flex flex-col gap-2 p-4' onClick={toggle}>
         <NavHashLink
-          to='/#home'
+          to='/#beranda'
           className={buttonVariants({
             variant:
-              location.hash === '#home' ||
+              location.hash === '#beranda' ||
               (location.pathname === '/' && location.hash === '')
                 ? 'default'
                 : 'ghost',
@@ -35,7 +35,7 @@ export default function MainSidebar({ state, toggle }) {
           })}
           smooth
         >
-          <House className='mr-2' /> Home
+          <House className='mr-2' /> Beranda
         </NavHashLink>
         <NavHashLink
           to='/#tentang-saya'
