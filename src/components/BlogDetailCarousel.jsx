@@ -23,8 +23,7 @@ export default function BlogDetailCarousel({ images }) {
             <img
               src={image.src}
               alt={image.alt}
-              className='aspect-video object-contain bg-primary-foreground
-              rounded-md'
+              className='aspect-video rounded-md bg-primary-foreground object-contain'
             />
           </CarouselItem>
         ))}

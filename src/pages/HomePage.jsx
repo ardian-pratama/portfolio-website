@@ -8,11 +8,11 @@ import HeroSection from '../components/HeroSection.jsx';
 import { readLatestBlogWithLimit } from '../services/blog.js';
 
 export const loader = () => {
-  return defer({ blogs: readLatestBlogWithLimit(5) });
+  return defer({ blog: readLatestBlogWithLimit(5) });
 };
 
 export default function HomePage() {
-  const { blogs } = useLoaderData();
+  const { blog } = useLoaderData();
 
   return (
     <>
@@ -26,9 +26,9 @@ export default function HomePage() {
         </p>
         <div className='grid gap-4 md:grid-cols-2'>
           <Suspense fallback={<BlogCardSkeleton />}>
-            <Await resolve={blogs}>
-              {(blogsData) =>
-                blogsData.map((blog, index) => (
+            <Await resolve={blog}>
+              {(blogData) =>
+                blogData.map((blog, index) => (
                   <BlogCard
                     key={index}
                     blog_id={blog.id}

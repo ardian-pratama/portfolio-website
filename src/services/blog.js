@@ -8,8 +8,8 @@ import {
   query,
   setDoc,
 } from 'firebase/firestore';
-import { auth, db, storage } from '../lib/firebase.js';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { db, storage } from '../lib/firebase.js';
 
 export const writeBlog = async ({
   title,
@@ -69,21 +69,10 @@ export const writeBlog = async ({
 };
 
 export const readAllBlogs = async () => {
-  const blogsRef = collection(db, 'blogs');
-  const blogSnapshot = await getDocs(blogsRef);
-  const blogsData = blogSnapshot.docs.map(document => ({
-    id: document.id,
-    ...document.data(),
-  }));
-
-  return blogsData;
-};
-
-export const readLatestBlogWithLimit = async limitData => {
   const blogRef = collection(db, 'blogs');
-  const blogQuery = query(blogRef, orderBy('created_at', 'desc'), limit(limitData));
+  const blogQuery = query(blogRef, orderBy('created_at', 'desc'));
   const blogSnapshot = await getDocs(blogQuery);
-  const blogData = blogSnapshot.docs.map(document => ({
+  const blogData = blogSnapshot.docs.map((document) => ({
     id: document.id,
     ...document.data(),
   }));
@@ -91,7 +80,23 @@ export const readLatestBlogWithLimit = async limitData => {
   return blogData;
 };
 
-export const readBlogById = async id => {
+export const readLatestBlogWithLimit = async (limitData) => {
+  const blogRef = collection(db, 'blogs');
+  const blogQuery = query(
+    blogRef,
+    orderBy('created_at', 'desc'),
+    limit(limitData)
+  );
+  const blogSnapshot = await getDocs(blogQuery);
+  const blogData = blogSnapshot.docs.map((document) => ({
+    id: document.id,
+    ...document.data(),
+  }));
+
+  return blogData;
+};
+
+export const readBlogById = async (id) => {
   const blogsRef = doc(db, 'blogs', id);
   const blogSnapshot = await getDoc(blogsRef);
   const blogData = blogSnapshot.exists() ? blogSnapshot.data() : null;

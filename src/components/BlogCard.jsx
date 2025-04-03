@@ -16,7 +16,7 @@ export default function BlogCard({
       <img
         src={thumbnail.src}
         alt={title}
-        className='aspect-video rounded-md object-contain'
+        className='aspect-video rounded-md bg-primary-foreground object-contain'
       />
       <div className='flex flex-wrap justify-end gap-2'>
         {tags.map((tag, index) => (
@@ -31,9 +31,7 @@ export default function BlogCard({
         <Link to={`/blog/${blog_id}`} className='text-blue-500'>
           Selengkapnya
         </Link>
-        <p className='self-end text-xs'>
-          {formatTimestamp(created_at)}
-        </p>
+        <p className='self-end text-xs'>{formatTimestamp(created_at)}</p>
       </div>
     </div>
   );
@@ -47,7 +45,7 @@ export const BlogCardSkeleton = () => {
           key={index}
           className='flex flex-col gap-2 rounded-md border p-4 shadow'
         >
-          <Skeleton className='aspect-video w-full animate-pulse rounded-md' />
+          <Skeleton className='aspect-video w-full rounded-md' />
           <div className='flex items-center justify-end gap-2'>
             <Skeleton className='h-5 w-24 rounded-md' />
             <Skeleton className='h-5 w-24 rounded-md' />

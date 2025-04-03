@@ -70,8 +70,7 @@ export default function BlogCreatePreview({ value }) {
               <CarouselItem key={index}>
                 <img
                   src={URL.createObjectURL(image)}
-                  className='aspect-video object-contain bg-primary-foreground
-                  rounded-md'
+                  className='aspect-video rounded-md bg-primary-foreground object-contain'
                 />
               </CarouselItem>
             ))}

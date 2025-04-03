@@ -43,7 +43,9 @@ export default function InputImage({ value, onChange, className, multiple }) {
               key={index}
               src={image.url}
               alt='Preview image'
-              className={cn(`aspect-square object-cover ${className}`)}
+              className={cn(
+                `aspect-square rounded-md bg-primary-foreground object-cover ${className}`
+              )}
             />
           ))
         ) : (

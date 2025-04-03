@@ -1,12 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import MainLayout from '../layouts/MainLayout.jsx';
-import HomePage, { loader as homePageLoader } from '../pages/HomePage.jsx';
+import HomePage, { loader as loaderHomePage } from '../pages/HomePage.jsx';
 import NotFoundPage from '../pages/NotFoundPage.jsx';
 import BlogDetailPage, {
   loader as loaderBlogDetailPage,
 } from '../pages/blog/BlogDetailPage.jsx';
-import BlogPage, { loader as blogPageLoader } from '../pages/blog/BlogPage.jsx';
+import BlogPage, { loader as loaderBlogPage } from '../pages/blog/BlogPage.jsx';
 
 import AuthLayout from '../layouts/AuthLayout.jsx';
 import SignInPage from '../pages/auth/SignInPage.jsx';
@@ -15,6 +15,9 @@ import SignUpPage from '../pages/auth/SignUpPage.jsx';
 import DashboardLayout from '../layouts/DashboardLayout.jsx';
 import DashboardPage from '../pages/dashboard/DashboardPage.jsx';
 import BlogCreate from '../pages/dashboard/blog/BlogCreate.jsx';
+import BlogManage, {
+  loader as loaderBlogManage,
+} from '../pages/dashboard/blog/BlogManage.jsx';
 
 export const router = createBrowserRouter([
   {
@@ -24,7 +27,7 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: HomePage,
-        loader: homePageLoader,
+        loader: loaderHomePage,
       },
       {
         path: 'blog',
@@ -32,7 +35,7 @@ export const router = createBrowserRouter([
           {
             index: true,
             Component: BlogPage,
-            loader: blogPageLoader,
+            loader: loaderBlogPage,
           },
           {
             path: ':id',
@@ -57,6 +60,11 @@ export const router = createBrowserRouter([
           {
             path: 'membuat',
             Component: BlogCreate,
+          },
+          {
+            path: 'mengelola',
+            Component: BlogManage,
+            loader: loaderBlogManage,
           },
         ],
       },

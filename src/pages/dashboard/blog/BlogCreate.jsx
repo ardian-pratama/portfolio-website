@@ -13,12 +13,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoaderCircle, SendHorizontal, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import BlogCreatePreview from '../../../components/BlogCreatePreview.jsx';
 import InputImage from '../../../components/InputImage.jsx';
-import { writeBlog } from '../../../services/blog.js';
-import { toast } from 'sonner';
 import useAuth from '../../../hooks/useAuth.jsx';
+import { writeBlog } from '../../../services/blog.js';
 
 const formSchema = z.object({
   title: z.string().min(1, { message: 'Judul tidak boleh kosong' }),
@@ -60,23 +60,25 @@ export default function BlogCreate() {
   });
   const { user } = useAuth();
 
-  const onSubmit = async values => {
+  const onSubmit = async (values) => {
     setLoading(true);
     try {
-      await writeBlog({...values, user: {
+      await writeBlog({
+        ...values,
+        user: {
           name: user.name,
           image: user.image,
-        }});
+        },
+      });
       toast.message('Berhasil', {
         description: 'Blog telah berhasil dipublikasikan.',
       });
       form.reset();
-    } catch (error) {
+    } catch {
       toast.message('Gagal', {
         description:
           'Terjadi kesalahan saat menyimpan blog. Silahkan coba lagi.',
       });
-      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -105,7 +107,7 @@ export default function BlogCreate() {
                   <FormControl>
                     <InputImage
                       value={field.value}
-                      onChange={file => field.onChange(file)}
+                      onChange={(file) => field.onChange(file)}
                       className='aspect-video object-contain'
                       multiple={false}
                     />
@@ -121,10 +123,7 @@ export default function BlogCreate() {
                 <FormItem>
                   <FormLabel className='text-primary'>Judul</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      className='text-sm'
-                    />
+                    <Input {...field} className='text-sm' />
                   </FormControl>
                   <FormMessage className='font-normal text-red-500' />
                 </FormItem>
@@ -140,7 +139,7 @@ export default function BlogCreate() {
                     <Textarea
                       {...field}
                       value={field.value}
-                      onChange={e => field.onChange(e.target.value)}
+                      onChange={(e) => field.onChange(e.target.value)}
                       className='text-sm'
                     />
                   </FormControl>
@@ -182,8 +181,8 @@ export default function BlogCreate() {
                           {...field}
                           className='text-sm'
                           value={input.tag}
-                          onChange={e =>
-                            setInput(prev => ({
+                          onChange={(e) =>
+                            setInput((prev) => ({
                               ...prev,
                               tag: e.target.value,
                             }))
@@ -196,7 +195,7 @@ export default function BlogCreate() {
                           disabled={!input.tag.trim()}
                           onClick={() => {
                             form.setValue('tags', [...field.value, input.tag]);
-                            setInput(prev => ({ ...prev, tag: '' }));
+                            setInput((prev) => ({ ...prev, tag: '' }));
                           }}
                         >
                           <SendHorizontal />
@@ -229,7 +228,9 @@ export default function BlogCreate() {
                                 onClick={() =>
                                   form.setValue(
                                     'contents',
-                                    field.value.filter(data => data !== content)
+                                    field.value.filter(
+                                      (data) => data !== content
+                                    )
                                   )
                                 }
                               />
@@ -242,8 +243,8 @@ export default function BlogCreate() {
                           {...field}
                           className='text-sm'
                           value={input.content}
-                          onChange={e =>
-                            setInput(prev => ({
+                          onChange={(e) =>
+                            setInput((prev) => ({
                               ...prev,
                               content: e.target.value,
                             }))
@@ -259,7 +260,7 @@ export default function BlogCreate() {
                               ...field.value,
                               input.content,
                             ]);
-                            setInput(prev => ({ ...prev, content: '' }));
+                            setInput((prev) => ({ ...prev, content: '' }));
                           }}
                         >
                           <SendHorizontal />
@@ -280,7 +281,7 @@ export default function BlogCreate() {
                   <FormControl>
                     <InputImage
                       value={field.value}
-                      onChange={file => field.onChange(file)}
+                      onChange={(file) => field.onChange(file)}
                       className='aspect-video object-contain'
                       multiple={true}
                     />
@@ -310,7 +311,7 @@ export default function BlogCreate() {
                                 onClick={() =>
                                   form.setValue(
                                     'links',
-                                    field.value.filter(data => data !== link)
+                                    field.value.filter((data) => data !== link)
                                   )
                                 }
                               />
@@ -323,20 +324,20 @@ export default function BlogCreate() {
                           {...field}
                           className='text-sm'
                           value={input.link}
-                          onChange={e =>
-                            setInput(prev => ({
+                          onChange={(e) =>
+                            setInput((prev) => ({
                               ...prev,
                               link: e.target.value,
                             }))
                           }
-                          onKeyDown={e => {
+                          onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                               e.preventDefault();
                               form.setValue('links', [
                                 ...field.value,
                                 input.link,
                               ]);
-                              setInput(prev => ({ ...prev, link: '' }));
+                              setInput((prev) => ({ ...prev, link: '' }));
                             }
                           }}
                         />
@@ -350,7 +351,7 @@ export default function BlogCreate() {
                               ...field.value,
                               input.link,
                             ]);
-                            setInput(prev => ({ ...prev, link: '' }));
+                            setInput((prev) => ({ ...prev, link: '' }));
                           }}
                         >
                           <SendHorizontal />
@@ -362,11 +363,7 @@ export default function BlogCreate() {
                 </FormItem>
               )}
             />
-            <Button
-              type='submit'
-              disabled={loading}
-              className='md:col-span-2'
-            >
+            <Button type='submit' disabled={loading} className='md:col-span-2'>
               {loading ? (
                 <LoaderCircle className='animate-spin' />
               ) : (

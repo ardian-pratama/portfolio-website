@@ -124,6 +124,7 @@ export default function DashboardSidebar({ state, toggle }) {
             icon={menu.icon}
             title={menu.title}
             lists={menu.lists}
+            toggle={toggle}
           />
         ))}
       </div>
@@ -131,7 +132,7 @@ export default function DashboardSidebar({ state, toggle }) {
   );
 }
 
-const ListPageMenu = ({ icon, title, lists }) => {
+const ListPageMenu = ({ icon, title, lists, toggle }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -156,6 +157,7 @@ const ListPageMenu = ({ icon, title, lists }) => {
                   className: '!justify-start',
                 })
               }
+              onClick={toggle}
               end={list.end}
             >
               {list.icon} <p className='truncate'>{list.title}</p>

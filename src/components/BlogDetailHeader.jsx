@@ -15,7 +15,7 @@ export default function BlogDetailHeader({
       <img
         src={thumbnail.src}
         alt={thumbnail.alt}
-        className='aspect-video rounded-md object-contain bg-primary-foreground'
+        className='aspect-video rounded-md bg-primary-foreground object-contain'
       />
       <div className='my-auto flex flex-col gap-2'>
         <div className='flex flex-wrap justify-end gap-2'>
@@ -38,9 +38,7 @@ export default function BlogDetailHeader({
           </Avatar>
           <p className='font-bold text-primary'>{user.name}</p>
         </div>
-        <p className='self-end text-xs'>
-          {formatTimestamp(created_at)}
-        </p>
+        <p className='self-end text-xs'>{formatTimestamp(created_at)}</p>
       </div>
     </div>
   );

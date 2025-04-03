@@ -31,22 +31,22 @@ export default function BlogDetailPage() {
       </Link>
       <Suspense fallback={<BlogDetailPageSkeleton />}>
         <Await resolve={blog}>
-          {(blogsData) => {
-            if (blogsData) {
+          {(blogData) => {
+            if (blogData) {
               return (
                 <>
                   <BlogDetailHeader
-                    thumbnail={blogsData.thumbnail}
-                    title={blogsData.title}
-                    tags={blogsData.tags}
-                    description={blogsData.description}
-                    user={blogsData.user}
-                    created_at={blogsData.created_at}
+                    thumbnail={blogData.thumbnail}
+                    title={blogData.title}
+                    tags={blogData.tags}
+                    description={blogData.description}
+                    user={blogData.user}
+                    created_at={blogData.created_at}
                   />
-                  <BlogDetailMain contents={blogsData.contents} />
-                  <BlogDetailCarousel images={blogsData.images} />
-                  <BlogDetailFooter links={blogsData.links} />
-                  <BlogComment blog_id={blogsData.id} />
+                  <BlogDetailMain contents={blogData.contents} />
+                  <BlogDetailCarousel images={blogData.images} />
+                  <BlogDetailFooter links={blogData.links} />
+                  <BlogComment blog_id={blogData.id} />
                 </>
               );
             }

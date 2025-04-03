@@ -4,11 +4,11 @@ import BlogCard, { BlogCardSkeleton } from '../../components/BlogCard.jsx';
 import { readAllBlogs } from '../../services/blog.js';
 
 export const loader = () => {
-  return defer({ blogs: readAllBlogs() });
+  return defer({ blog: readAllBlogs() });
 };
 
 export default function BlogPage() {
-  const { blogs } = useLoaderData();
+  const { blog } = useLoaderData();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -23,9 +23,9 @@ export default function BlogPage() {
       </p>
       <div className='grid gap-4 md:grid-cols-2'>
         <Suspense fallback={<BlogCardSkeleton />}>
-          <Await resolve={blogs}>
-            {(blogsData) =>
-              blogsData.map((blog, index) => (
+          <Await resolve={blog}>
+            {(blogData) =>
+              blogData.map((blog, index) => (
                 <BlogCard
                   key={index}
                   blog_id={blog.id}
