@@ -45,6 +45,7 @@ export const signUp = async ({ name, email, password, image }) => {
     email,
     provider_id: user.providerData[0].providerId,
     image: imageData,
+    roles: ['pengguna'],
     created_at: Date.now(),
     updated_at: Date.now(),
   });
@@ -81,13 +82,14 @@ export const signInWithGoogle = async () => {
         email: user.providerData[0].email,
         provider_id: user.providerData[0].providerId,
         image: { src: user.photoURL, alt: user.displayName },
+        roles: ['pengguna'],
         created_at: Date.now(),
         updated_at: Date.now(),
       });
     }
 
     toast.message('Berhasil', {
-      description: `Anda berhasil masuk dengan Google sebagai ${user.displayName}.`,
+      description: `Kamu berhasil masuk dengan Google sebagai ${user.displayName}.`,
     });
 
     return user;
@@ -112,13 +114,14 @@ export const signInWithGithub = async () => {
         email: user.providerData[0].email,
         provider_id: user.providerData[0].providerId,
         image: { src: user.photoURL, alt: user.displayName },
+        roles: ['pengguna'],
         created_at: Date.now(),
         updated_at: Date.now(),
       });
     }
 
     toast.message('Berhasil', {
-      description: `Anda berhasil masuk dengan Github sebagai ${user.displayName}.`,
+      description: `Kamu berhasil masuk dengan Github sebagai ${user.displayName}.`,
     });
 
     return user;
@@ -132,12 +135,12 @@ export const signInWithGithub = async () => {
 export const logOut = async () => {
   await signOut(auth);
   toast.message('Berhasil', {
-    description: 'Anda telah berhasil keluar. Sampai jumpa lagi.',
+    description: 'Kamu telah berhasil keluar. Sampai jumpa lagi.',
   });
 };
 
-export const authStateListener = callback => {
-  return onAuthStateChanged(auth, async user => {
+export const authStateListener = (callback) => {
+  return onAuthStateChanged(auth, async (user) => {
     if (user) {
       const userRef = doc(db, 'users', user.uid);
       const userData = await getDoc(userRef);

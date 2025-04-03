@@ -12,6 +12,10 @@ import AuthLayout from '../layouts/AuthLayout.jsx';
 import SignInPage from '../pages/auth/SignInPage.jsx';
 import SignUpPage from '../pages/auth/SignUpPage.jsx';
 
+import DashboardLayout from '../layouts/DashboardLayout.jsx';
+import DashboardPage from '../pages/dashboard/DashboardPage.jsx';
+import BlogCreate from '../pages/dashboard/blog/BlogCreate.jsx';
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -34,6 +38,25 @@ export const router = createBrowserRouter([
             path: ':id',
             Component: BlogDetailPage,
             loader: loaderBlogDetailPage,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: '/dasbor',
+    Component: DashboardLayout,
+    children: [
+      {
+        index: true,
+        Component: DashboardPage,
+      },
+      {
+        path: 'blog',
+        children: [
+          {
+            path: 'membuat',
+            Component: BlogCreate,
           },
         ],
       },

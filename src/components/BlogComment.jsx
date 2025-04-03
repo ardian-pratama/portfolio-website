@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { LoaderCircle, Trash2 } from 'lucide-react';
+import { LoaderCircle, SendHorizontal, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -41,19 +41,20 @@ export default function BlogComment({ blog_id }) {
   const { user } = useAuth();
 
   useEffect(() => {
-    const unsubscribe = readBlogComments(blog_id, data => {
+    const unsubscribe = readBlogComments(blog_id, (data) => {
       setComments(data);
     });
 
     return () => unsubscribe();
   }, [blog_id]);
 
-  const onSubmit = async value => {
+  const onSubmit = async (value) => {
     setLoading(true);
     try {
       if (!user) {
-        return toast.message('Hei, tunggu dulu!', {
-          description: 'Masuk dulu ya sebelum menulis komentar.',
+        return toast.message('Gagal', {
+          description:
+            'Hanya pengguna yang sudah masuk yang bisa memberikan komentar. Silakan masuk terlebih dahulu.',
         });
       }
 
@@ -67,12 +68,13 @@ export default function BlogComment({ blog_id }) {
         comment: value.comment,
       });
       toast.message('Berhasil', {
-        description: 'Komentar Anda berhasil diposting.',
+        description:
+          'Komentar kamu berhasil dikirim. Terima kasih sudah berkomentar.',
       });
       form.reset();
     } catch {
       toast.message('Gagal', {
-        description: 'Gagal memposting komentar. Silakan coba lagi.',
+        description: 'Gagal mengirim komentar. Silahkan coba lagi.',
       });
     } finally {
       setLoading(false);
@@ -84,11 +86,11 @@ export default function BlogComment({ blog_id }) {
     try {
       await deleteBlogComment(blog_id, id);
       toast.message('Berhasil', {
-        description: 'Komentar Anda berhasil dihapus.',
+        description: 'Komentar kamu berhasil dihapus',
       });
     } catch {
       toast.message('Gagal', {
-        description: 'Gagal menghapus komentar. Silakan coba lagi.',
+        description: 'Gagal menghapus komentar. Silahkan coba lagi.',
       });
     } finally {
       setDeleteLoading(false);
@@ -118,11 +120,7 @@ export default function BlogComment({ blog_id }) {
           }
 
           return (
-            <OtherComment
-              key={index}
-              user={comment.user}
-              comment={comment}
-            />
+            <OtherComment key={index} user={comment.user} comment={comment} />
           );
         })}
         <Form {...form}>
@@ -134,16 +132,13 @@ export default function BlogComment({ blog_id }) {
                 <FormItem>
                   <div className='flex items-center gap-2'>
                     <FormControl className='flex-1'>
-                      <Input
-                        {...field}
-                        className='text-sm'
-                      />
+                      <Input {...field} className='text-sm' />
                     </FormControl>
-                    <Button type='submit'>
+                    <Button type='submit' size='icon'>
                       {loading ? (
                         <LoaderCircle className='animate-spin' />
                       ) : (
-                        'Kirim'
+                        <SendHorizontal />
                       )}
                     </Button>
                   </div>

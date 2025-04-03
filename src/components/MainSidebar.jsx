@@ -1,12 +1,20 @@
 import { Button, buttonVariants } from '@/components/ui/button';
-import { BookUser, House, NotebookText, X } from 'lucide-react';
+import {
+  BookUser,
+  House,
+  LayoutDashboard,
+  NotebookText,
+  X,
+} from 'lucide-react';
 import { useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { NavHashLink } from 'react-router-hash-link';
+import useAuth from '../hooks/useAuth.jsx';
 import useClickOutside from '../hooks/useClickOutside.jsx';
 
 export default function MainSidebar({ state, toggle }) {
   const ref = useRef(null);
+  const { user } = useAuth();
   const location = useLocation();
   useClickOutside(ref, () => toggle(false));
 
@@ -37,6 +45,20 @@ export default function MainSidebar({ state, toggle }) {
         >
           <House className='mr-2' /> Beranda
         </NavHashLink>
+        {user?.roles?.includes('admin') && (
+          <NavLink
+            to='/dasbor'
+            className={({ isActive }) =>
+              buttonVariants({
+                variant: isActive ? 'default' : 'ghost',
+                className: '!justify-start',
+              })
+            }
+            end
+          >
+            <LayoutDashboard className='mr-2' /> Dasbor
+          </NavLink>
+        )}
         <NavHashLink
           to='/#tentang-saya'
           className={buttonVariants({

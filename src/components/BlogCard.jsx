@@ -14,7 +14,7 @@ export default function BlogCard({
   return (
     <div className='flex flex-col gap-2 rounded-md border p-4 shadow'>
       <img
-        src={thumbnail}
+        src={thumbnail.src}
         alt={title}
         className='aspect-video rounded-md object-contain'
       />
@@ -32,7 +32,7 @@ export default function BlogCard({
           Selengkapnya
         </Link>
         <p className='self-end text-xs'>
-          {formatTimestamp(created_at.seconds)}
+          {formatTimestamp(created_at)}
         </p>
       </div>
     </div>

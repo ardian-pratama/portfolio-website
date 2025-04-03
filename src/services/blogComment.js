@@ -12,6 +12,7 @@ import { rtdb } from '../lib/firebase.js';
 export const writeBlogComment = async ({ blog_id, user, comment }) => {
   const commentRef = ref(rtdb, `blogs/${blog_id}/comments`);
   const newCommentRef = push(commentRef);
+  console.log(user);
 
   await set(newCommentRef, {
     user,

@@ -51,19 +51,17 @@ export default function SignUpPage() {
     },
   });
 
-  const onSubmit = async values => {
+  const onSubmit = async (values) => {
     setLoading(true);
     try {
       await signUp(values);
       toast.message('Berhasil', {
-        description:
-          'Akun Anda telah berhasil dibuat. Anda sekarang dapat masuk.',
+        description: 'Akun kamu telah berhasil dibuat. Selamat bergabung',
       });
       form.reset();
     } catch {
       toast.message('Gagal', {
-        description:
-          'Terjadi kesalahan saat membuat akun Anda. Silakan coba lagi.',
+        description: 'Terjadi kesalahan saat mendaftar. Silahkan coba lagi',
       });
     } finally {
       setLoading(false);
@@ -76,7 +74,7 @@ export default function SignUpPage() {
         Buat akun baru
       </h1>
       <p className='text-justify'>
-        Masukkan detail Anda di bawah ini untuk mendaftar akun baru.
+        Masukkan detail Kamu di bawah ini untuk mendaftar akun baru.
       </p>
       <Form {...form}>
         <form
@@ -90,10 +88,7 @@ export default function SignUpPage() {
               <FormItem>
                 <FormLabel className='text-primary'>Nama</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    className='text-sm'
-                  />
+                  <Input {...field} className='text-sm' />
                 </FormControl>
                 <FormMessage className='font-normal text-red-500' />
               </FormItem>
@@ -106,10 +101,7 @@ export default function SignUpPage() {
               <FormItem>
                 <FormLabel className='text-primary'>Email</FormLabel>
                 <FormControl>
-                  <Input
-                    {...field}
-                    className='text-sm'
-                  />
+                  <Input {...field} className='text-sm' />
                 </FormControl>
                 <FormMessage className='font-normal text-red-500' />
               </FormItem>
@@ -120,7 +112,7 @@ export default function SignUpPage() {
             name='password'
             render={({ field }) => (
               <FormItem>
-                <FormLabel className='text-primary'>Password</FormLabel>
+                <FormLabel className='text-primary'>Kata Sandi</FormLabel>
                 <FormControl>
                   <div className='relative'>
                     <Input
@@ -153,18 +145,16 @@ export default function SignUpPage() {
                 <FormLabel className='text-foreground'>Gambar</FormLabel>
                 <FormControl>
                   <InputImage
-                    value={form.watch('image')}
-                    setValue={file => field.onChange(file)}
+                    value={field.value}
+                    onChange={(file) => field.onChange(file)}
+                    multiple={false}
                   />
                 </FormControl>
                 <FormMessage className='font-normal text-red-500' />
               </FormItem>
             )}
           />
-          <Button
-            type='submit'
-            disabled={loading}
-          >
+          <Button type='submit' disabled={loading}>
             {loading ? <LoaderCircle className='animate-spin' /> : 'Daftar'}
           </Button>
         </form>
